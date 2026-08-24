@@ -1,38 +1,65 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="100%" height="100%">
     <defs>
         <style>
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-2px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes blink {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.3; }
+            }
+            @keyframes scan {
+                0% { transform: translateY(130px); opacity: 0; }
+                10% { opacity: 0.5; }
+                90% { opacity: 0.5; }
+                100% { transform: translateY(750px); opacity: 0; }
+            }
+            
+            .anim-fade { opacity: 0; animation: fadeIn 0.4s ease-out forwards; }
+            .anim-blink { animation: blink 1.5s infinite; }
+            
             .bg { fill: #ffffff; }
             .terminal-bg { fill: #fbfdff; }
-            .terminal-border { fill: none; stroke: #93b4d1; stroke-width: 2; rx: 12; }
-            .panel-border { fill: none; stroke: #c2d6e8; stroke-width: 2; rx: 12; }
-            .panel-bg { fill: #f4f8fc; }
+            .terminal-border { fill: none; stroke: #a3c4df; stroke-width: 2; rx: 12; }
+            .panel-border { fill: none; stroke: #b6d3eb; stroke-width: 1.5; rx: 12; }
+            .panel-bg { fill: #f2f7fc; }
             
             .dot-red { fill: #ff5f56; }
             .dot-yellow { fill: #ffbd2e; }
             .dot-green { fill: #27c93f; }
             
-            .text-main { font-family: 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', monospace; font-size: 14px; fill: #475569; }
+            /* Use more generic monospace font stack to ensure consistent look everywhere */
+            .text-main { font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; font-size: 14.5px; fill: #475569; }
             .text-title { fill: #8ba2b8; font-size: 14px; font-weight: bold; }
-            .text-key { fill: #0284c7; font-weight: bold; }
-            .text-val { fill: #334155; }
-            .text-section { fill: #0ea5e9; font-weight: bold; }
-            .text-divider { fill: #94a3b8; letter-spacing: 2px; }
-            .text-header { fill: #6366f1; font-weight: bold; font-size: 16px; }
+            .text-key { fill: #0ea5e9; font-weight: bold; }
+            .text-val { fill: #1e293b; }
+            .text-section { fill: #0284c7; font-weight: bold; }
+            .text-divider { fill: #94a3b8; letter-spacing: 2.5px; }
+            .text-header { fill: #4f46e5; font-weight: bold; font-size: 16px; }
             
-            .ascii { font-family: 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', monospace; fill: #6094ea; font-size: 8px; font-weight: 500; white-space: pre; letter-spacing: 1px; }
+            .ascii { font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; fill: #6094ea; font-size: 8px; font-weight: 500; white-space: pre; letter-spacing: 1.5px; }
             
             .scan-dot { fill: #ef4444; }
             .scan-text { fill: #ef4444; font-size: 12px; font-weight: bold; letter-spacing: 1px; }
             
             .highlight-bg { fill: #e0f2fe; rx: 4; }
+            
+            .scanline-effect { fill: url(#scanGradient); }
         </style>
+        
+        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#cbd5e1" flood-opacity="0.6"/>
+        </filter>
+        <linearGradient id="scanGradient" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0"/>
+            <stop offset="50%" stop-color="#38bdf8" stop-opacity="0.2"/>
+            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+        </linearGradient>
     </defs>
 
-    <!-- Outer shadow simulation (bottom thick border) -->
-    <rect x="20" y="60" width="1360" height="730" fill="#cbd5e1" rx="12"/>
-
-    <!-- Terminal Window Background -->
-    <rect x="20" y="60" width="1360" height="720" class="terminal-bg" rx="12"/>
+    <!-- Terminal Window Background with soft shadow -->
+    <rect x="20" y="60" width="1360" height="720" class="terminal-bg" rx="12" filter="url(#shadow)"/>
     <rect x="20" y="60" width="1360" height="720" class="terminal-border"/>
     
     <!-- Top Bar -->
@@ -42,115 +69,131 @@
     
     <text x="700" y="95" class="text-main text-title" text-anchor="middle">soumyar78@dev ~ % ./profile.sh --live</text>
     
-    <circle cx="1270" cy="92" r="5" class="scan-dot"/>
-    <text x="1285" y="96" class="text-main scan-text">SCANNING</text>
+    <circle cx="1270" cy="92" r="4" class="scan-dot anim-blink"/>
+    <text x="1285" y="96" class="text-main scan-text anim-blink">SCANNING</text>
 
     <!-- Left Panel: VISUAL.MAP -->
-    <rect x="40" y="140" width="560" height="610" class="panel-bg" rx="12"/>
-    <rect x="40" y="140" width="560" height="610" class="panel-border"/>
-    <text x="60" y="165" class="text-main text-section">VISUAL.MAP</text>
+    <rect x="40" y="140" width="560" height="620" class="panel-bg" rx="12"/>
+    <rect x="40" y="140" width="560" height="620" class="panel-border"/>
+    <text x="60" y="165" class="text-main text-section anim-fade" style="animation-delay: 0.2s;">VISUAL.MAP</text>
 
     <!-- ASCII Art -->
-    <text x="60" y="200" class="ascii">
-<tspan x="60" dy="0">-----::::::::::::::::............................................::::::::::::--------------------------------=</tspan>
-<tspan x="60" dy="11">----::::::::::::::::..............................................:::::::::::::-------------------------------</tspan>
-<tspan x="60" dy="11">---::::::::::::::::.................................................::::::::::::------------------------------</tspan>
-<tspan x="60" dy="11">---::::::::::::::::.................................................:::::::::::::-----------------------------</tspan>
-<tspan x="60" dy="11">--::::::::::::::::...................................................:::::::::::::----------------------------</tspan>
-<tspan x="60" dy="11">--:::::::::::::::.........................  . ........................::::::::::::::--------------------------</tspan>
-<tspan x="60" dy="11">-::::::::::::::::.......................        .......................:::::::::::::--------------------------</tspan>
-<tspan x="60" dy="11">-:::::::::::::::........................          ......................:::::::::::::-------------------------</tspan>
-<tspan x="60" dy="11">-:::::::::::::::.......................             ....................::::::::::::::------------------------</tspan>
-<tspan x="60" dy="11">::::::::::::::::......................                  .................:::::::::::::::----------------------</tspan>
-<tspan x="60" dy="11">:::::::::::::::.....................      .:::::::--:...  ................::::::::::::::----------------------</tspan>
-<tspan x="60" dy="11">:::::::::::::::....................    .:=**+=++++*#####+:.................:::::::::::::::--------------------</tspan>
-<tspan x="60" dy="11">:::::::::::::::...................    :=+==+*#%%%%#%%%%%@%+................:::::::::::::::--------------------</tspan>
-<tspan x="60" dy="11">::::::::::::::...................    -***#**#%%%%%%%%%%%@@%+:...............::::::::::::::::------------------</tspan>
-<tspan x="60" dy="11">::::::::::::::...................   .*%%%%%%####*++====++%%@*................::::::::::::::::-----------------</tspan>
-<tspan x="60" dy="11">::::::::::::::...................   .**+**++++==--:::--==*@@%:................::::::::::::::::----------------</tspan>
-<tspan x="60" dy="11">::::::::::::::....................   =*-----:::::::--====+%@#.................:::::::::::::::::---------------</tspan>
-<tspan x="60" dy="11">::::::::::::::....................   :=--==+=======++++==-=%*:.................:::::::::::::::::--------------</tspan>
-<tspan x="60" dy="11">::::::::::::::...................    ::-++***+=:-=****++--=*++. ...............::::::::::::::::::-------------</tspan>
-<tspan x="60" dy="11">:::::::::::::....................    --:===++=-.:--=--::--==+-  ................::::::::::::::::::------------</tspan>
-<tspan x="60" dy="11">:::::::::::::....................    .-:...::::::--:::::--=+=.  .................::::::::::::::::::-----------</tspan>
-<tspan x="60" dy="11">::::::::::::....................       -----=+*++**+++=====-.    .................:::::::::::::::::::---------</tspan>
-<tspan x="60" dy="11">::::::::::::....................       .-=+**+**++++*#+====:....    ..............:::::::::::::::::::---------</tspan>
-<tspan x="60" dy="11">::::::::::::....................       .--=++=============+++==---:................::::::::::::::::::::-------</tspan>
-<tspan x="60" dy="11">::::::::::::..................    .  .-+---=====+++=====+++*#*=+===---::............:::::::::::::::::::-------</tspan>
-<tspan x="60" dy="11">:::::::::::.......................:---=--++===+++++++++++==*##**+=+=++--::::--:......::::::::::::::::::::-----</tspan>
-<tspan x="60" dy="11">::::::::::................:.:::::::-==--=+++=======++++===+##**+==+++---===++---::...::::::::::::::::::::-----</tspan>
-<tspan x="60" dy="11">::::::::::..............::-=----=-===+=--+***+==========+*###**++*+**=-=++*==-====-...::::::::::::::::::::----</tspan>
-<tspan x="60" dy="11">:::::::::..............:----=--====+=+*=-+**##**++++++**#####**+**+**++++*+========-...::::::::::::::::::::---</tspan>
-<tspan x="60" dy="11">::::::::..............:----===-=-=++=+++=+*+**################*******+*+*+=========+: ........::::::::::::::--</tspan>
-<tspan x="60" dy="11">:::::::...............--=====+++==+==++**+***#################***********+++++++++++=  ......--::::::::::::::-</tspan>
-<tspan x="60" dy="11">:::::::..............:===++++****++==+++*****#################********#******++***+++: ....::==-::::::::::::::</tspan>
-<tspan x="60" dy="11">::::::...............-=+++*#**####*+++*+****#################*********#####*****++++*- ...::-++:::::::::::::::</tspan>
-<tspan x="60" dy="11">:::::................-=++**#######*********#######*##########*******#*%%%#*****++++**+...:::=+=:::::::::::::::</tspan>
-<tspan x="60" dy="11">::::................:==++****###%%#**##*****#################**++**###%%#**********+++:..::-=+-:::::::::::::::</tspan>
-<tspan x="60" dy="11">::::................:-===++**###%%%#####****################+=+=++####%@#******+++++++=.:::-==::::::::::::::::</tspan>
-<tspan x="60" dy="11">:::.................-=-==+++***#%#%%######**################*****#####%%%****++++++++++::::-==::::::::::::::::</tspan>
-<tspan x="60" dy="11">:::.................----===++**#*.#%#################################%##%**+====---==++:::--=-::::::::::::::::</tspan>
-<tspan x="60" dy="11">:::................:::.....::-=*- -%#*##############################%####+=-::::::--==+-::-==-::::::::::::::::</tspan>
-<tspan x="60" dy="11">:::................:::.....::-++.. =#**##################################*--:::::---==+=::-==:::::::::::::::::</tspan>
-<tspan x="60" dy="11">:::................::::::::--=*=...:+*+*#######################%%%%######*=---:::---==+=:--==:::::::::::::::::</tspan>
-<tspan x="60" dy="11">:::...............:::::::--==*+.....=+*+*####################%%%%%%%%#####==---:::--=+++---==:::::::::::::::::</tspan>
-<tspan x="60" dy="11">::::..............::...:-==++*: :...-++**##%###############%%%%%%%%%%%%%%#+===-::::-==++--=+=:::::::::::::::::</tspan>
-<tspan x="60" dy="11">::::.............::.. ..:-=+*=  :....=+*###%%%%%%%%####%%%%%%%%%%%%%%%%%%%#++-::.::-=+++--=+-:::::::::::::::::</tspan>
-<tspan x="60" dy="11">::::.............::...   ..:=:  .:....+*#%%%%%%%%%%%%%%%%%%%%%%%%%%%@@@@%#+-:..:::--=+++--=+-:::::::::::::::::</tspan>
-<tspan x="60" dy="11">:::::............--:..    ...:..:-==+*%@@@@@@%%%%%%%%%%%%%%%%%%%%@@@@@#+-:...:::-==+++*=-==+::::::::::::::::::</tspan>
-<tspan x="60" dy="11">:::::............--:::.    ..:-*#%%%@@@@@@@@@@@@%%%%%%%%%%%%%%%@@@@%+-:...:::--==+++++*===++::::::::::::::::::</tspan>
-<tspan x="60" dy="11">::::::...........:--:::..   .:-%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@@@*=:.:::::--===++++++++===+=:::::::::::::::::-</tspan>
-<tspan x="60" dy="11">:::::::..........:=--:::...  .=%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@#*=-::::::---==+++++*****====*-:::::::::::::::::-</tspan>
-<tspan x="60" dy="11">::::::::......:=+*##=--::... ..=#%%%%%%%###%@@@@@@@@@@@@%%#*+++-::----===++++**#%%%%%%*=++*::::::::::::::::---</tspan>
-<tspan x="60" dy="11">:::::::::...:=****#@%*=::....   .-+-::::-:::-=+*#%%#*+-:::+*%%%%+-===+++++*#%%%%%%###%%#++=::::::::::::::-----</tspan>
-<tspan x="60" dy="11">:::::::::.:*#######%@@%*-:.::....::--====:.....:::::::::::-%%%%%%*=++++*#%@@@%%########%#-:::::::::::::-------</tspan>
-<tspan x="60" dy="11">::::::::::-#%%%%%%%%@@@@#-:::::::==:...::::::::::::--------+#%%%%***##@@@@@@%%%%%#####%%%#-:::::--------------</tspan>
-<tspan x="60" dy="11">::::::::::*%%%%%%%%%@@@@@#::::::::::-=+=-::::-----------====+#%%%%@@@%@@@@@@%%%%%%%%%%%%%@+.::::::::::::::::::</tspan>
-<tspan x="60" dy="11">.........:#%%%%%%%@@@@@@@@+:::--=+****=:--====-=========+*#%@@@@@@%%%@@@@@@@@@@@%%%%%%%%%%#:.:::::::::::::::::</tspan>
-<tspan x="60" dy="11">::::::...*%%%%%%%@@@@@@@@@%=:-+*##+=--==+++=====+=====+*%%%%@@@@@@@%%%@@@@@@@@@@@@@%%%%%%@@=::::::--::::::::--</tspan>
-<tspan x="60" dy="11">::.......:#%%%%%%@@@@@@@@@@@*=*+===++++====++++++=========+***#%@@@@@@@@@@@@@@@@@@@@@@@%%%@*:.....:...........</tspan>
-<tspan x="60" dy="11">         .#%%%%%%@@@@@@@@@@@@=-==+***+++++++++==-:::::::::-===+++#@@@@@@@@@@@@@@@@@@@@@@@@%%#.                </tspan>
-<tspan x="60" dy="11">         -%%%%%%@@@@@@@@@@@@%###*++=+++++++=++++++++++=====+======#%%%%%@@@@@@@@@@@@@@@@%@@@#                 </tspan>
-<tspan x="60" dy="11">         -%%%%%%@@@@@@@@@@@@%%%#######*++++++==========+++++++*****#####%@@@@@@@@@@@@@@@%%%@@-                </tspan>
-<tspan x="60" dy="11">         :%%%%%%%@@@@@@@@@@@#####*****+++++++=================+++++*#####%@@@@@@@@@@@@@@@@%%@*                </tspan>
-<tspan x="60" dy="11">         .%%%%%%%%@@@@@@@@@@###*******++++++++=================++++***####@@@@@@@@@@@@@@@@@@%%.               </tspan>
-<tspan x="60" dy="11">          #%%%%%%%@@@@@@@@@@###******++++++++++===============++++++*****#%@@@@@@@@@@@@@@@@%%%:  ....         </tspan>
-<tspan x="60" dy="11">          *%%%%%%%@@@@@@@@@@##*******+++++++++++==+++++===++++++++++******#@@@@@@@@@@@@@@@@%%%-.....      ....</tspan>
-<tspan x="60" dy="11">          +%%%%%%@@@@@@@@@@%##******++++++++++++====++++==+++++++++++******%@@@@@@@@@@@@@@@%%%-.......  ......</tspan>
-<tspan x="60" dy="11">          =%%%%%%@@@@@@@@@@%##******++++++++++++===========++++++++++******#@@@@@@@@@@@@@@@%%@=...............</tspan>
-<tspan x="60" dy="11">          :%%%%%%%@@@@@@@@@%##******++++++++++=============+++++++++++******%@@@@@@@@@@@@@@%%@=...............</tspan>
+    <text x="60" y="195" class="ascii">
+<tspan x="60" dy="0" class="anim-fade" style="animation-delay: 0.50s;">------::::::::::::::::::..................................................::::::::::::::------------------------------------=</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 0.54s;">-----::::::::::::::::::....................................................::::::::::::::------------------------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 0.58s;">----::::::::::::::::::......................................................::::::::::::::-----------------------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 0.62s;">---::::::::::::::::::........................................................::::::::::::::----------------------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 0.66s;">---::::::::::::::::::.........................................................:::::::::::::::--------------------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 0.70s;">--::::::::::::::::::...........................................................:::::::::::::::-------------------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 0.74s;">--::::::::::::::::::............................  . ............................:::::::::::::::------------------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 0.78s;">--:::::::::::::::::..........................        . ..........................:::::::::::::::-----------------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 0.82s;">-::::::::::::::::::..........................            ........................::::::::::::::::----------------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 0.86s;">-:::::::::::::::::...........................             ........................::::::::::::::::---------------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 0.90s;">::::::::::::::::::..........................                 ......................::::::::::::::::--------------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 0.94s;">::::::::::::::::::.......................                       ....................::::::::::::::::-------------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 0.98s;">:::::::::::::::::.......................       :===-----=++==--:. ..................:::::::::::::::::------------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.02s;">:::::::::::::::::.......................    .:=++++++**+**###%%%*-...................:::::::::::::::::-----------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.06s;">:::::::::::::::::......................    :=++==+*#%%%%%%%%%%%%@@+...................:::::::::::::::::----------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.10s;">::::::::::::::::......................    :+***#**##%%%%%%%%%%%@@@%+:.................::::::::::::::::::---------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.14s;">::::::::::::::::......................   .+#%%%%%%%####**+++==++*%%@#..................::::::::::::::::::--------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.18s;">::::::::::::::::......................   .*#**#*****++==------===#@@@= .................::::::::::::::::::-------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.22s;">::::::::::::::::......................    +*===-------::::::---==*%@%- ..................::::::::::::::::::------------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.26s;">::::::::::::::::......................    :*----==-------==++++++=*%%. ..................::::::::::::::::::::----------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.30s;">::::::::::::::::......................    .=:-==+++======+++*++=-:-#*=: ..................::::::::::::::::::::---------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.34s;">:::::::::::::::.......................    -::=*+****=::-+****+++===*++- ...................::::::::::::::::::::--------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.38s;">:::::::::::::::......................     :=:-===++=-:.:-----:::--==++. ...................:::::::::::::::::::::-------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.42s;">:::::::::::::::......................      --:...:::::::-:::::::--=+=:   ...................:::::::::::::::::::::------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.46s;">::::::::::::::.......................       :------=++=+*+==========-    ....................:::::::::::::::::::::-----------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.50s;">::::::::::::::.......................       .-==++++*#****+*#*=====.        .................::::::::::::::::::::::----------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.54s;">:::::::::::::........................        :-=+**+=======+++====+===-::.... ................::::::::::::::::::::::---------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.58s;">:::::::::::::.......................        :=---======+++=-=====++**+=====-::.................::::::::::::::::::::::--------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.62s;">:::::::::::::.....................    ....:=+-:-======++++====+++++*#*++*=-=--=--:::...........:::::::::::::::::::::::-------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.66s;">:::::::::::::.........................::-----==+++==++++++*+++++===*##*+++++=++=--:----=-:......:::::::::::::::::::::::------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.70s;">::::::::::::..................:.:::--::-===---=*++========++++====+###*++==++*=---===++=---::....:::::::::::::::::::::::-----</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.74s;">:::::::::::.................::-=:------===++--=****+=============*####*+++****+=-+++*==--====-:...:::::::::::::::::::::::----</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.78s;">::::::::::.................:---==:-=======+*=--***##*++=====+++*#####**++**+***=+++*+=-========:.:::::::::::::::::::::::::---</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.82s;">:::::::::.................::----=----=+++=+**==*++**##################*****+**++*+*+===========-.......::::::::::::::::::::--</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.86s;">::::::::.................:-----==+===-=+==++**++*+*###################********+*+**+===++++===++:  .......:-:::::::::::::::--</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.90s;">::::::::................:--=+==+++*+*+====+++*******##################**************++**++++++++-  .....::=-::::::::::::::::-</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.94s;">:::::::.................-===+**+******++==+++******###################**********#****#**+***+++++. ....::-+=-::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 1.98s;">:::::::.................-=+++**##*####****+*******####################*********######******+++++*: ...:::=++:::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.02s;">::::::..................-++++**####%###**********#######**############*******###%%%#*******+++**+= ..:::-++=:::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.06s;">:::::..................:=-+**+***###%#%#***##*****###################***+***####@%#***********++++...:::-+=-:::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.10s;">::::...................:-===++**####%%%##*####****##################*=+====#####@@#********+++++++:..::--+=::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.14s;">:::....................---===++****##%%%#######**###################*+++***####%%@#*****++++++++++=.:::-=+=::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.18s;">:::...................:=====++++**##%++%%#######*##############################%#%%#**+++++++++++++::::-=+-::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.22s;">:::...................:-::----==++**#:.#%#####################################%####*+==---------=++::::-==-::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.26s;">:::...................:::......::-=+=. -%#*##################################%%####+--:::::::---==+-::--==:::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.30s;">::::..................:::.....::--=*:.. =##*#######################################*---:::::---==++-::--==:::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.34s;">::::.................::::::.:::--=*+....:+***###########################%%%%#######*=---::::---==++=:--=+=:::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.38s;">::::.................::::::::--==+*:.....=+*+*########################%%%%%%%%######==----:::--==++=:--=+-:::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.42s;">::::.................::...:--===+*= :....-++***#%%##################%%%%%%%%%%%%####+===--::::--=+++---=+-:::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.46s;">::::................::.....:=+++*+. .....:++***##%%%############%%%%%%%%%%%%%%%%%%%%*++=-::.::--=+++--==+::::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.50s;">:::::...............::..   ..:-=*-  .:....:+**###%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%+=-::.:::--=+++--=+=::::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.54s;">:::::..............:-:...    ...-.   :....:+##%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%@@@@@%#+=::..:::--==++*=--=+=::::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.58s;">:::::..............:-::..     ...:..:-=+*##%@@@@@@@@%%%%%%%%%%%%%%%%%%%%%@@@@@@#+-:...::::--==++++*=-==+-::::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.62s;">::::::.............:--:::..    ..:-*%%%%%%@@@@@@@@@@@@@%%%%%%%%%%%%%%%%@@@@@%+-:....::::--==+++++**===+*-::::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.66s;">:::::::.............---:::...  ..:-#%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#=:.:::::::--===+++++++*+===++::::::::::::::::::::-</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.70s;">::::::::............:---::....  ..=%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@@%#+-:::::::---===+++++++++*+====++:::::::::::::::::::--</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.74s;">:::::::::........:-+**=--:::.... .:+%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@%#*+-:::::::---====++++**###%%%%===+*=:::::::::::::::::::--</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.78s;">::::::::::.....:+****%%*=-:::....  .-*%%*+====--=+*#%@@@@@@@@#*+==++#%%%*----===++++++**#%%%%%%%%%#+++*-:::::::::::::::::----</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.82s;">::::::::::...-=*#****#@@%*-::..:..    .:.:---==:....:-=+++=-:::..:=%%%%%%#===++++++*#%@@@%%#######%%*==:::::::::::::::-------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.86s;">:::::::::::.+#########%@@@%+-:.::....:===---=-:.::.::::::::::::----#%%%%%@#=+++**#%@@@@%%%%########%%=:::::::::::::----------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.90s;">::::::::::::*#%%%%%%%%%@@@@@+:::::::::-:....:---:::::::::----------=##%%%%**##%%@@@@@@%%%%%%#####%%%%%=::::::----------------</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.94s;">::::::::::.=%%%%%%%%%%@@@@@@@=:::::::::::-=++--::::-------------====+*%%%%%@@@%%@@@@@@%%%%%%%%%%%%%%%@#.:::::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 2.98s;">...........=%%%%%%%%@@@@@@@@@#-::::-==+**#*+-:--====-===========+*#%@@@@@@@%%%@%@@@@@@@@@@%%%%%%%%%%%%%=.::::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 3.02s;">::::......=%%%%%%%%%@@@@@@@@@@*-:-=+*##*+=---=++++=--=========+#%@@@@@@@@@@@@%%@@@@@@@@@@@@@@%%%%%%%%@@*::::::::-::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 3.06s;">::::::::..-#%%%%%%%%@@@@@@@@@@@*-=*#*+====++++======+++++++==++*****##%@@@@@@@%@@@@@@@@@@@@@@@@@@@%%%%@%:.:::::::::::::::::::</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 3.10s;">.....      +%%%%%%%@@@@@@@@@@@@@%+==-==+***+====++++++===---------=++++**%@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%*-               ....</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 3.14s;">           *%%%%%%%%@@@@@@@@@@@@@+-++=**++=+++**++++==-:::::::::::-=======*%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@+                   </tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 3.18s;">          :%%%%%%%@@@@@@@@@@@@@@%%%%%+++++*+++++==++*********++++++++++++=+#%%%%%%@@@@@@@@@@@@@@@@@@%@@@@=                   </tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 3.22s;">          .%%%%%%%%@@@@@@@@@@@@@###########*+++++++==-----======+==+++******######%@@@@@@@@@@@@@@@@@%%%%@%.                  </tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 3.26s;">          .#%%%%%%%%@@@@@@@@@@@%#####******++++++++====================+++++*######%@@@@@@@@@@@@@@@@@@%%%@=                  </tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 3.30s;">           *%%%%%%%%@@@@@@@@@@@%####*******++++++++++===================+++++***####@@@@@@@@@@@@@@@@@@@@%@#                  </tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 3.34s;">           +%%%%%%%%@@@@@@@@@@@%###*******++++++++++++=================++++++*****##%@@@@@@@@@@@@@@@@@@@%%%.    ...          </tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 3.38s;">           =%%%%%%%%@@@@@@@@@@@%###*******+++++++++++++=+++=======++++++++++++******#@@@@@@@@@@@@@@@@@@@%%%:......           </tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 3.42s;">           -%%%%%%%%@@@@@@@@@@@%###*******+++++++++++++===++++++==++++++++++++*******%@@@@@@@@@@@@@@@@@@%%%:.....       .....</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 3.46s;">           :%%%%%%%%@@@@@@@@@@@%##*******+++++++++++++=====++++====+++++++++++*******#@@@@@@@@@@@@@@@@@@%%%-........  .......</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 3.50s;">           .#%%%%%%%@@@@@@@@@@@###*******+++++++++++++=============++++++++++++*******%@@@@@@@@@@@@@@@@%%%%-.................</tspan>
+<tspan x="60" dy="10" class="anim-fade" style="animation-delay: 3.54s;">            *%%%%%%%@@@@@@@@@@@###*******+++++++++++================+++++++++++*******#@@@@@@@@@@@@@@@@@%%@-.............:...</tspan>
     </text>
 
     <!-- Right Panel: SYSTEM.INFO -->
-    <rect x="620" y="140" width="740" height="610" class="panel-bg" rx="12"/>
-    <rect x="620" y="140" width="740" height="610" class="panel-border"/>
+    <rect x="620" y="140" width="740" height="620" class="panel-bg" rx="12"/>
+    <rect x="620" y="140" width="740" height="620" class="panel-border"/>
     
-    <text x="640" y="165" class="text-main text-section">SYSTEM.INFO</text>
-    <text x="640" y="190" class="text-main text-header">soumyar78@dev <tspan class="text-divider">---------------------------------------------</tspan></text>
+    <text x="640" y="165" class="text-main text-section anim-fade" style="animation-delay: 0.2s;">SYSTEM.INFO</text>
+    <text x="640" y="190" class="text-main text-header anim-fade" style="animation-delay: 0.3s;">soumyar78@dev <tspan class="text-divider">---------------------------------------------</tspan></text>
     
-    <text x="640" y="225" class="text-main"><tspan class="text-title">. </tspan><tspan class="text-key">Name:</tspan> <tspan class="text-divider">................................... </tspan><tspan class="text-val">Soumyaranjan Behera</tspan></text>
-    <text x="640" y="255" class="text-main"><tspan class="text-title">. </tspan><tspan class="text-key">Role:</tspan> <tspan class="text-divider">................................... </tspan><tspan class="text-val">Ruby on Rails · Full-Stack Dev</tspan></text>
-    <text x="640" y="285" class="text-main"><tspan class="text-title">. </tspan><tspan class="text-key">Origin:</tspan> <tspan class="text-divider">................................. </tspan><tspan class="text-val">Bengaluru, India</tspan></text>
-    <text x="640" y="315" class="text-main"><tspan class="text-title">. </tspan><tspan class="text-key">Experience:</tspan> <tspan class="text-divider">............................. </tspan><tspan class="text-val">4+ Years</tspan></text>
-    <text x="640" y="345" class="text-main"><tspan class="text-title">. </tspan><tspan class="text-key">Status:</tspan> <tspan class="text-divider">............... </tspan><tspan class="text-val">Building · Learning · Shipping</tspan></text>
+    <text x="640" y="230" class="text-main anim-fade" style="animation-delay: 0.40s;"><tspan class="text-title">. </tspan><tspan class="text-key">Name:</tspan> <tspan class="text-divider">................................... </tspan><tspan class="text-val">Soumyaranjan Behera</tspan></text>
+    <text x="640" y="260" class="text-main anim-fade" style="animation-delay: 0.50s;"><tspan class="text-title">. </tspan><tspan class="text-key">Role:</tspan> <tspan class="text-divider">................................... </tspan><tspan class="text-val">Ruby on Rails · Full-Stack Dev</tspan></text>
+    <text x="640" y="290" class="text-main anim-fade" style="animation-delay: 0.60s;"><tspan class="text-title">. </tspan><tspan class="text-key">Origin:</tspan> <tspan class="text-divider">................................. </tspan><tspan class="text-val">Bengaluru, India</tspan></text>
+    <text x="640" y="320" class="text-main anim-fade" style="animation-delay: 0.70s;"><tspan class="text-title">. </tspan><tspan class="text-key">Experience:</tspan> <tspan class="text-divider">............................. </tspan><tspan class="text-val">4+ Years</tspan></text>
+    <text x="640" y="350" class="text-main anim-fade" style="animation-delay: 0.80s;"><tspan class="text-title">. </tspan><tspan class="text-key">Status:</tspan> <tspan class="text-divider">............... </tspan><tspan class="text-val">Building · Learning · Shipping</tspan></text>
 
     <!-- CORE.STACK -->
-    <text x="640" y="415" class="text-main"><tspan class="text-title">. </tspan><tspan class="text-key">Core.Backend:</tspan> <tspan class="text-divider">......................... </tspan><tspan class="text-val">Ruby, Ruby on Rails, REST APIs</tspan></text>
-    <text x="640" y="445" class="text-main"><tspan class="text-title">. </tspan><tspan class="text-key">Core.Frontend:</tspan> <tspan class="text-divider">........................ </tspan><tspan class="text-val">React, JavaScript, HTML, CSS</tspan></text>
-    <text x="640" y="475" class="text-main"><tspan class="text-title">. </tspan><tspan class="text-key">Core.Database:</tspan> <tspan class="text-divider">........................ </tspan><tspan class="text-val">PostgreSQL, MySQL, MongoDB</tspan></text>
-    <text x="640" y="505" class="text-main"><tspan class="text-title">. </tspan><tspan class="text-key">Core.Infra:</tspan> <tspan class="text-divider">........................... </tspan><tspan class="text-val">AWS, Docker, Redis, Sidekiq</tspan></text>
-    <text x="640" y="535" class="text-main"><tspan class="text-title">. </tspan><tspan class="text-key">Core.Tools:</tspan> <tspan class="text-divider">........................... </tspan><tspan class="text-val">Git, Linux, RSpec</tspan></text>
+    <text x="640" y="420" class="text-main anim-fade" style="animation-delay: 1.00s;"><tspan class="text-title">. </tspan><tspan class="text-key">Core.Backend:</tspan> <tspan class="text-divider">......................... </tspan><tspan class="text-val">Ruby, Ruby on Rails, REST APIs</tspan></text>
+    <text x="640" y="450" class="text-main anim-fade" style="animation-delay: 1.10s;"><tspan class="text-title">. </tspan><tspan class="text-key">Core.Frontend:</tspan> <tspan class="text-divider">........................ </tspan><tspan class="text-val">React, JavaScript, HTML, CSS</tspan></text>
+    <text x="640" y="480" class="text-main anim-fade" style="animation-delay: 1.20s;"><tspan class="text-title">. </tspan><tspan class="text-key">Core.Database:</tspan> <tspan class="text-divider">........................ </tspan><tspan class="text-val">PostgreSQL, MySQL, MongoDB</tspan></text>
+    <text x="640" y="510" class="text-main anim-fade" style="animation-delay: 1.30s;"><tspan class="text-title">. </tspan><tspan class="text-key">Core.Infra:</tspan> <tspan class="text-divider">........................... </tspan><tspan class="text-val">AWS, Docker, Redis, Sidekiq</tspan></text>
+    <text x="640" y="540" class="text-main anim-fade" style="animation-delay: 1.40s;"><tspan class="text-title">. </tspan><tspan class="text-key">Core.Tools:</tspan> <tspan class="text-divider">........................... </tspan><tspan class="text-val">Git, Linux, RSpec</tspan></text>
 
     <!-- CONTACT -->
-    <text x="640" y="590" class="text-main"><tspan class="text-section">- Contact </tspan><tspan class="text-divider">-----------------------------------------------------</tspan></text>
-    <text x="640" y="620" class="text-main"><tspan class="text-title">. </tspan><tspan class="text-key">Grid.Portfolio:</tspan> <tspan class="text-divider">....................... </tspan><tspan class="text-val">codewithsoumya.com</tspan></text>
-    <text x="640" y="650" class="text-main"><tspan class="text-title">. </tspan><tspan class="text-key">Grid.LinkedIn:</tspan> <tspan class="text-divider">........................ </tspan><tspan class="text-val">linkedin.com/in/soumyaranjanb</tspan></text>
-    <text x="640" y="680" class="text-main"><tspan class="text-title">. </tspan><tspan class="text-key">Grid.Github:</tspan> <tspan class="text-divider">.......................... </tspan><tspan class="text-val">soumyar78</tspan></text>
+    <text x="640" y="600" class="text-main anim-fade" style="animation-delay: 1.60s;"><tspan class="text-section">- Contact </tspan><tspan class="text-divider">-----------------------------------------------------</tspan></text>
+    <text x="640" y="630" class="text-main anim-fade" style="animation-delay: 1.70s;"><tspan class="text-title">. </tspan><tspan class="text-key">Grid.Portfolio:</tspan> <tspan class="text-divider">....................... </tspan><tspan class="text-val">codewithsoumya.com</tspan></text>
+    <text x="640" y="660" class="text-main anim-fade" style="animation-delay: 1.80s;"><tspan class="text-title">. </tspan><tspan class="text-key">Grid.LinkedIn:</tspan> <tspan class="text-divider">........................ </tspan><tspan class="text-val">linkedin.com/in/soumyaranjanb</tspan></text>
+    <text x="640" y="690" class="text-main anim-fade" style="animation-delay: 1.90s;"><tspan class="text-title">. </tspan><tspan class="text-key">Grid.Github:</tspan> <tspan class="text-divider">.......................... </tspan><tspan class="text-val">soumyar78</tspan></text>
 
     <!-- LIVE STATS HIGHLIGHT -->
-    <text x="640" y="725" class="text-main"><tspan class="text-section">- Live Stats </tspan><tspan class="text-divider">--------------------------------------------------</tspan></text>
-    <rect x="640" y="732" width="10" height="18" class="text-section" />
-    <rect x="650" y="732" width="370" height="18" class="highlight-bg" />
-    <text x="655" y="746" class="text-main text-val" style="font-size: 13px;">See live GitHub stats badges below in README ↓</text>
+    <text x="640" y="735" class="text-main anim-fade" style="animation-delay: 2.10s;"><tspan class="text-section">- Live Stats </tspan><tspan class="text-divider">--------------------------------------------------</tspan></text>
+    
+    <g class="anim-fade" style="animation-delay: 2.3s;">
+        <rect x="640" y="742" width="10" height="18" class="text-section" />
+        <rect x="650" y="742" width="370" height="18" class="highlight-bg" />
+        <text x="655" y="756" class="text-main text-val" style="font-size: 13px;">See live GitHub stats badges below in README ↓</text>
+    </g>
+
+    <!-- Optional subtle scanline overlay -->
+    <rect x="20" y="60" width="1360" height="10" class="scanline-effect" style="animation: scan 4s linear infinite;" />
 
 </svg>
